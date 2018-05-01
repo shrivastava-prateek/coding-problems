@@ -1,4 +1,4 @@
-package com.psl.problems;
+package com.mindspark;
 
 public class IsometricNumbers {
 

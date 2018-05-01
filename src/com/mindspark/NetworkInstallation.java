@@ -1,4 +1,4 @@
-package com.psl.problems;
+package com.mindspark;
 
 import java.util.ArrayList;
 import java.util.List;

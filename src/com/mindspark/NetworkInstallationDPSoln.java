@@ -4,7 +4,7 @@
    System.out.println("this is a debug message");
 */
 
-package com.psl.problems;
+package com.mindspark;
 
 public class NetworkInstallationDPSoln {
     //function to find maximum distance of current tower with existing along a col from top to bottom
