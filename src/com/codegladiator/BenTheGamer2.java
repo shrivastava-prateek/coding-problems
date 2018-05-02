@@ -7,142 +7,183 @@ import java.util.List;
 import java.util.Scanner;
 
 public class BenTheGamer2 {
-static List<Level> globalLevels = new ArrayList<Level>();
+	//static List<Level> globalLevels = new ArrayList<Level>();
 	public static void main(String[] args) {
-		
+
 		Scanner sc = new Scanner(System.in);
 		int N = sc.nextInt();
 		int M = sc.nextInt();
 		sc.nextLine();
-		
+
 		List<Level> levels = new ArrayList<Level>();
 		for(int i = 0;i < N;i ++) {
 			String str = sc.nextLine();
-			String[] strArr = str.split("");
-			
-			Level l= new Level();
-		    List<Integer> weaponsIndexes = new ArrayList<>();
- 		    for(int j=0;j<M;j++) {
-			
-				if (strArr[j].equals("1")) {
-				    weaponsIndexes.add(j);
+			str = str.trim();
+			int c=0;
+			List<Integer> weaponsIndexes = new ArrayList<>();
+			for (char s: str.toCharArray()){
+				if(c == M){
+					break;
 				}
-			
+				if (s=='1') {
+					weaponsIndexes.add(c);
+				}
+				c++;
 			}
-		    
-		    l.values = strArr;
-		    l.weaponsIndexes = weaponsIndexes;
-		    l.totalWeapons = weaponsIndexes.size();
-		    levels.add(l);
-		    globalLevels.add(l);
+
+			Level l= new Level();
+			l.values = str;
+			l.weaponsIndexes = weaponsIndexes;
+			l.totalWeapons = weaponsIndexes.size();
+			
+				levels.add(l);
+				//globalLevels.add(l);
+			
+			
+		
 		}
 		sc.close();
-		
+
 		Comparator<Level> c = new Comparator<Level>() {
 
 			@Override
 			public int compare(Level l1, Level l2) {
 				if(l1.totalWeapons > l2.totalWeapons)
-				return 1;
+					return 1;
 				else if (l1.totalWeapons < l2.totalWeapons)
 					return -1;
 				else {
-					List<Level> sameLevel = new ArrayList<Level>();
+				/*	globalLevels.remove(l1);
+					globalLevels.remove(l2);
+					globalLevels.add(l1);
+					globalLevels.add(l2);
 					
-					//System.out.println("Levels: "+ l1 + " and "+ l2);
-					for (Level l:globalLevels) {
-						if(l.totalWeapons == l1.totalWeapons) {
-							sameLevel.add(l);
-						}
-					}
-					int countl1=0;
-					List<Integer> weaponsL1 = l1.weaponsIndexes;
-					int countl2 = 0;
-					List<Integer> weaponsL2 = l2.weaponsIndexes;
-					for (Level l3 : sameLevel) {
-						List<Integer> weaponsL3 = l3.weaponsIndexes;
-						
-						for (int i : weaponsL1) {
-							if(weaponsL3.contains(i)) {
-								countl1++;
-							}
-						}
-					}
+					int cost1 = calculateCost(globalLevels);
 					
-					for (Level l3 : sameLevel) {
-						List<Integer> weaponsL3 = l3.weaponsIndexes;
-						
-						for (int i : weaponsL2) {
-							if(weaponsL3.contains(i)) {
-								countl2++;
-							}
-						}
-					}
-					System.out.println("Levels: "+ countl1 + " and "+ countl2);
-				/*	List<Level> temp1 = new ArrayList<Level>();
-					temp1.add(l1);
-					temp1.add(l2);
-					int cost1 = calculateCost(temp1);
-					List<Level> temp2 = new ArrayList<Level>();
-					temp2.add(l2);
-					temp2.add(l1);
-					int cost2 = calculateCost(temp2);*/
-					if(countl1 > countl2) return 1;
-					else return -1;
-				
+					globalLevels.remove(l1);
+					globalLevels.remove(l2);
+					globalLevels.add(l2);
+					globalLevels.add(l1);
+					
+					int cost2 = calculateCost(globalLevels);
+					if(cost1>cost2) return 1;
+					else if(cost1<cost2) return -1;
+					else */return 0;
 				}
-				
+
 			}
-			
+
 		};
 
 		Collections.sort(levels, c);
-		
-	System.out.println(levels);
+
+		//System.out.println(levels);
+
 		System.out.println(calculateCost(levels));
 	}
-	
-	
+
 	public static int calculateCost(List<Level> levels) {
 		List<Integer> indexes = new ArrayList<Integer>();
 		int count;
-		int cost = 0;
-		for(Level l: levels) {
-			count = 0;
-			List<Integer> weapons = l.weaponsIndexes;
-			for(int i : weapons) {
-				if(indexes.contains(i)) {
+		int minCost = 0;
+		int cost =0;
+		int finalcost = 0;
+		int vistedLevels = 1;
+		Level temp = null;
+		boolean flag = false;
+		
+		Level first = levels.get(0);
+		finalcost = calculateCost(first, indexes);
+		addIndexes(first, indexes);
+		first.isVisited = true;
+		//temp = first;
+	 //  System.out.println("Initial Final Cost: "+finalcost + " Indexes: "+indexes);
+		
+		while(vistedLevels != levels.size()){
+			for(int i = 0;i<levels.size();i++){
+				count = 0;
+				Level l = levels.get(i);
+				if (l.isVisited){
 					continue;
 				}
-				else {
-					indexes.add(i);
-					count++;
+				else{
+				
+				minCost = calculateCost(l, indexes);
+				//System.out.println("Minimum cost: "+ minCost+ " Level: "+l);
+				if(!flag){
+					cost = minCost;
+					flag = true;
+					temp = l;
+				}
+				if(minCost < cost){
+					cost = minCost;
+					temp = l;
+					
 				}
 			}
-			cost = cost + count*count;
+			}
+			
+			//System.out.println("--Minimum cost: "+ cost+ " Level: "+temp);
+			temp.isVisited = true;
+			finalcost = finalcost + cost;
+			vistedLevels++;
+			addIndexes(temp, indexes);
+			cost =0;
+			flag=false;
+
 		}
-		return cost;
+		return finalcost;
 	}
-	static class Level{
+
+	public static int calculateCost(Level level,List<Integer> indexes){
+		int count = 0;
+		int cost = 0;
+		List<Integer> weaponsIndex = level.weaponsIndexes;
+		for(int j : weaponsIndex) {
+			if(indexes.contains(j)) {
+				//indexes.remove(j);
+				continue;
+			}
+			else {
+				count++;
+			}
+		}
+		cost = cost + count*count;
+		return cost;
 		
-		private String[] values;
+	}
+	
+	public static void addIndexes(Level level,List<Integer> indexes){
+		
+		List<Integer> weaponsIndex = level.weaponsIndexes;
+		for(int j : weaponsIndex) {
+			if(indexes.contains(j)) {
+				continue;
+			}
+			else {
+				indexes.add(j);
+			}
+		}
+	}
+
+
+
+	static class Level{
+
+		private String values;
 		private List<Integer> weaponsIndexes;
 		private int totalWeapons;
-		
+		boolean isVisited;
+
 		public Level() {
-			
+
 		}
-		
+
 		@Override
 		public String toString() {
-		
-			String appended="";
-			for (String a : values) {
-				appended = appended + a;
-			}
-			return "{"+appended +"-"+ weaponsIndexes+"}";
+			return "{"+values +"-"+ weaponsIndexes+"}";
 		}
-		
 
-}
+
+	}
 }
