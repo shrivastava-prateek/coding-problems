@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,9 +24,9 @@ public class Test1 {
 		}
 		
 		public boolean isOverlap(Salmon salmon){
-			if(this.headT > salmon.headT ) return false;
-			if(this.tailT < salmon.tailT) return false;
-			return true;
+			if(this.headT >= salmon.headT && this.headT <= salmon.tailT) return true;
+			//if(this.tailT == salmon.tailT) return true;
+			return false;
 		}
 		
 		@Override
@@ -75,20 +77,118 @@ public class Test1 {
 	        	salmonList.add(s);
 	        } 
 	       
+	        Comparator<Salmon> c = new Comparator<Salmon>() {
+
+				@Override
+				public int compare(Salmon s1, Salmon s2) {
+				    if(s1.headT < s2.headT)
+					return -1;
+				    else if (s1.headT > s2.headT) return 1;
+				    else return 0;
+				}
+	        	
+	        };
+	        Collections.sort(salmonList,c);
+	        System.out.println(salmonList);
+	        
+	       // Map<Salmon,List<Salmon>> map = checkOverlapping(salmonList);
+	        
+	    /*    
+	        int count1 = calculateMaxSalmons(map);
+	        if (count1 == salmonList.size()) {
+	        	System.out.println(count1);
+	        }
+	        else {
+	        int count2 = calculateMaxSalmons(map);
+	        System.out.println(count1+count2);
+	        }*/
+	        
+	        if (salmonList.size()>1) {
+	        	System.out.println(calculateMaxSalmons(checkOverlapping(salmonList)));	
+	        }
+	        else System.out.println(1);
+	        
 	}
 	
-	public static Map<Salmon,List<Salmon>> checkOverlapping(List<Salmon> salmonList){
-		Map<Salmon, List<Salmon>> mapSalmonIntervals = new HashMap<Salmon, List<Salmon>>();
-		for(int i = 0 ; i < salmonList.size()-1; i++){
-			mapSalmonIntervals.put(salmonList.get(i), new ArrayList<Salmon>());
-			for(int j = i+1; j < salmonList.size(); j++){
-				if(salmonList.get(i).isOverlap(salmonList.get(j))){
-					System.out.println(salmonList.get(i) + " overlaps " + salmonList.get(j));
-					mapSalmonIntervals.get(salmonList.get(i)).add(salmonList.get(j));
+
+	
+	public static List<List<Salmon>> checkOverlapping(List<Salmon> salmonList){
+	    List<List<Salmon>> salmonIntervals = new ArrayList<List<Salmon>>();
+		for(int i = 0 ; i < salmonList.size(); i++){
+			List<Salmon> soln = new ArrayList<Salmon>();
+			soln.add(salmonList.get(i));
+			for(int j = 0; j < salmonList.size(); j++){
+				if(salmonList.get(i).isOverlap(salmonList.get(j)) && !(salmonList.get(i).equals(salmonList.get(j)))){
+					//System.out.println(salmonList.get(i) + " overlaps " + salmonList.get(j));
+					soln.add(salmonList.get(j));
+				}
+			}
+			salmonIntervals.add(soln);
+		}
+		//System.out.println(mapSalmonIntervals);
+		return salmonIntervals;
+	}
+	
+
+	public static int calculateMaxSalmons( List<List<Salmon>> solnList) {
+		int count=0,max= 0;
+		
+		for(int i = 0;i<solnList.size();i++) {
+			List<Salmon> soln1 = solnList.get(i);
+			for (int j = i+1;j<solnList.size();j++) {
+				List<Salmon> soln2 = new ArrayList<>(solnList.get(j));
+			    soln2.removeAll(soln1);
+				count = soln1.size()+soln2.size();
+				if(count> max) max = count;
+			}
+		}
+	
+		
+		return max;
+	}
+	
+	
+	/*	public static Map<Salmon,List<Salmon>> checkOverlapping(List<Salmon> salmonList){
+	Map<Salmon, List<Salmon>> mapSalmonIntervals = new HashMap<Salmon, List<Salmon>>();
+	for(int i = 0 ; i < salmonList.size()-1; i++){
+		mapSalmonIntervals.put(salmonList.get(i), new ArrayList<Salmon>());
+		for(int j = 0; j < salmonList.size(); j++){
+			if(salmonList.get(i).isOverlap(salmonList.get(j)) && !(salmonList.get(i).equals(salmonList.get(j)))){
+				//System.out.println(salmonList.get(i) + " overlaps " + salmonList.get(j));
+				mapSalmonIntervals.get(salmonList.get(i)).add(salmonList.get(j));
+			}
+		}
+	}
+	//System.out.println(mapSalmonIntervals);
+	return mapSalmonIntervals;
+}*/
+	/*public static int calculateMaxSalmons( Map<Salmon,List<Salmon>> map) {
+	int count=0,max= 0;List<Salmon> usedSalomns = null; Salmon extra = null;
+	for(Salmon s : map.keySet()) {
+		count = map.get(s).size();
+		
+		if (max < count) {
+			max = count;
+			usedSalomns = map.get(s);
+			extra = s;
+		}
+	}
+	if (usedSalomns!=null) {
+		usedSalomns.add(extra);
+		List<Salmon> salmonsUsed = new ArrayList<>(usedSalomns);
+		for(Salmon s : map.keySet()) {
+			List<Salmon> salmons = map.get(s);
+			List<Salmon> duplicate = new ArrayList<>(salmons);
+			for (Salmon used : salmonsUsed) {
+				for (Salmon sal: duplicate) {
+					if(sal.equals(used)) salmons.remove(sal);
 				}
 			}
 		}
-		return mapSalmonIntervals;
 	}
 
+	
+	return max+1;
+}*/
+	
 }

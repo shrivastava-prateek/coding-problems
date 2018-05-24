@@ -83,41 +83,47 @@ public class Test2 {
 	        	Tree t = new Tree(xi,yi,mi,ti,i);
 	        	trees.add(t);
 	        }
+	        boolean print = false;
 	        if (countThreshold == 2) {
 	        	System.out.println("-1");
+	        	print = true;
 	        }
 	        
 	        List<Tree> meetTrees = new ArrayList<>();
 	        
 	        for(Tree t : trees) {
-	       List<Tree> duplicateList = new ArrayList<>(trees);
+	       List<Tree> duplicateList = new ArrayList<>();
 	        	for (Tree temp:trees) {
 	        		Tree temp2 = new Tree(temp.xi,temp.yi,temp.mi,temp.ti,temp.index);
 	        		duplicateList.add(temp2);
 	        	}
-	        
-	        	if(isAMeetTree(t,duplicateList,C)) {
+	        	Tree duplicateTree = new Tree (t.xi,t.yi,t.mi,t.ti,t.index);
+	        	//System.out.println(duplicateList);
+	        	if(isAMeetTree(duplicateTree,duplicateList,C)) {
 	        		meetTrees.add(t);
 	        	}
 	        	
 	        }
 	        
-	        Comparator<Tree> c = new Comparator<Tree>() {
+	        if (meetTrees.size() > 0) {
+	        	Comparator<Tree> c = new Comparator<Tree>() {
 
-				@Override
-				public int compare(Tree t1, Tree t2) {
-					if (t1.index < t2.index) return -1;
-					else if (t1.index > t2.index) return 1;
-					else return 0;
-				}
-	        };
-	        
-	        Collections.sort(meetTrees, c);
-	        String result = "";
-	        for (Tree t : meetTrees) {
-	        	result = result + t.index+" ";
+					@Override
+					public int compare(Tree t1, Tree t2) {
+						if (t1.index < t2.index) return -1;
+						else if (t1.index > t2.index) return 1;
+						else return 0;
+					}
+		        };
+		        
+		        Collections.sort(meetTrees, c);
+		        String result = "";
+		        for (Tree t : meetTrees) {
+		        	result = result + t.index+" ";
+		        }
+		        System.out.println(result.trim());
 	        }
-	        System.out.println(result.trim());
+	        else if (!print)System.out.println("-1");
 
 	}
 	
@@ -139,30 +145,37 @@ public class Test2 {
 				connected = null;
 				return false;
 			}
+			
 			double distance = Math.sqrt((x-xi)*(x-xi)+(y-yi)*(y-yi));
+			//System.out.println("distance" + distance);
 			if (C < distance) {
 				disconnected.add(tr);
 			}
 			else {
-				if (tr.next == null && tree.next != null) {
+				if (tree.next != null) {
 					if(tree.ti>= tr.mi+tree.mi) {
-						tr.mi = 0;
+						
 						tr.ti = tr.ti-tr.mi;
 						tree.mi = tree.mi+tr.mi;
+						tr.mi = 0;
 						tr.next = tree;
 						connected.add(tr);
+						assignWeights(tree.next, tree);
 					}
 					else {
 						 tr.mi= tr.mi-(tree.ti-tree.mi);
 						 tr.ti = tr.ti-(tree.ti-tree.mi);
 						 tree.mi = tree.ti;
+						 assignWeights(tree.next, tree);
 					}
 					
 				}
 				else {
-					tr.mi = 0;
+					//System.out.println("check in tree.next is null");
+					
 					tr.ti = tr.ti-tr.mi;
 					tree.mi = tree.mi+tr.mi;
+					tr.mi = 0;
 					tr.next = tree;
 					connected.add(tr);
 				}
@@ -172,15 +185,56 @@ public class Test2 {
 		
 		// continue here for disconnected
 		trees.removeAll(connected);
-		if (trees.size() == 0) return true;
+		//if (trees.size() == 0) return true;
 		if (connected.size()>0)tree.connected = connected;
 		if (disconnected.size()>0)tree.disconnected = disconnected;
-		boolean status = false;
+	
 		for (Tree connectedTree : connected) {
-			status = isAMeetTree(connectedTree,trees,C);
+		    isAMeetTree(connectedTree,trees,C);
+			Tree parent = connectedTree.next;
+			Tree child = connectedTree;
+			while(parent != null) {
+				assignWeights(parent, child);
+				child = parent;
+				parent = child.next;
+			}
+			
+			if (connectedTree.mi == 0) {
+				if (connectedTree.ti == 0)continue;
+				else isAMeetTree(connectedTree, trees, C);
+				
+			}
+			else if (connectedTree.ti == 0 && connectedTree.mi > 0) return false;
+			else if (connectedTree.ti < connectedTree.mi) return false;
+			else trees.add(connectedTree);
 		}
 		
-		return status;
+		return (trees.size()==0);
+	}
+	public static void assignWeights(Tree tree, Tree tr) {
+		if (tree.next != null) {
+			if(tree.ti>= tr.mi+tree.mi) {
+				tr.ti = tr.ti-tr.mi;
+				tree.mi = tree.mi+tr.mi;
+				tr.mi = 0;
+				tr.next = tree;
+				
+			}
+			else {
+				 tr.mi= tr.mi-(tree.ti-tree.mi);
+				 tr.ti = tr.ti-(tree.ti-tree.mi);
+				 tree.mi = tree.ti;
+			}
+			
+		}
+		else {
+			
+			tr.ti = tr.ti-tr.mi;
+			tree.mi = tree.mi+tr.mi;
+			tr.mi = 0;
+			tr.next = tree;
+			
+		}
 	}
 
 }
