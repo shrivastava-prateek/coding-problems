@@ -1,4 +1,4 @@
-package com.codegladiator;
+package com.techgig.codegladiator;
 
 import java.util.Scanner;
 
