@@ -15,7 +15,21 @@ public class BST2ndLargest {
 		BinaryTreeNode rootNode = new BinaryTreeNode(Integer.parseInt(nos[0]));
 		createBinarySearchTree(nos, rootNode);
 		levelTraversal(rootNode);
+		System.out.println();
+		System.out.println(findingSecondLargest(rootNode));
 
+	}
+	
+	public static int findingSecondLargest(BinaryTreeNode rootNode){
+		BinaryTreeNode tempNode=null;
+		while(rootNode !=null){
+			tempNode = rootNode.right;
+			if(tempNode.right == null) {
+				if(tempNode.left == null) return rootNode.value;
+				else rootNode = tempNode.left;			}
+			else rootNode = tempNode.right;
+		}
+		return 0;
 	}
 
 	public static void createBinarySearchTree(String[] nos,BinaryTreeNode rootNode){

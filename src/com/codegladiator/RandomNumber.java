@@ -1,4 +1,4 @@
-package com.techgig.codegladiator;
+package com.codegladiator;
 
 
 

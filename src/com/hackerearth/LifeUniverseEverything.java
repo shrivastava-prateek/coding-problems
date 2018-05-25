@@ -1,4 +1,4 @@
-package com.hackerearth.basicprogramming;
+package com.hackerearth;
 
 import java.io.BufferedReader;
 import java.io.IOException;
