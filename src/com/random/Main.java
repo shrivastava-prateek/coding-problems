@@ -28,6 +28,9 @@ public class Main{
 		System.out.println(map);
 		System.out.println(map.get(new Student(1,"Neha")));
 		System.out.println(map.entrySet());
+		
+		String s = "";
+		
 	}
 	
 	static class Student{
