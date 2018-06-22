@@ -1,7 +1,11 @@
 package com.random;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineFactory;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 abstract class AbstractMain {
     static int a = 1;
@@ -17,7 +21,7 @@ abstract class AbstractMain {
 public class Main{
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-        Map<Student, String> map = new HashMap<>();
+    /*    Map<Student, String> map = new HashMap<>();
         map.put(new Student(1,"Prateek"), ":1");
         map.put(new Student(1,"Neha"), ":2");
         map.put(new Student(1,"Nikhil"), ":3");
@@ -27,9 +31,38 @@ public class Main{
 		System.out.println(AbstractMain.a+ " -Main- "+ AbstractMain.b);
 		System.out.println(map);
 		System.out.println(map.get(new Student(1,"Neha")));
-		System.out.println(map.entrySet());
+		System.out.println(map.entrySet());*/
 		
 		String s = "";
+		
+		/*ScriptEngineManager mgr = new ScriptEngineManager();
+		  ScriptEngine jsEngine = mgr.getEngineByName("JavaScript");
+		  try {
+		    jsEngine.eval("print('Hello, world!')");
+		  } catch (ScriptException ex) {
+		      ex.printStackTrace();
+		  }    
+		  */
+		  
+		  ScriptEngineManager mgr = new ScriptEngineManager();
+		  List<ScriptEngineFactory> factories = 
+		      mgr.getEngineFactories();
+		  for (ScriptEngineFactory factory: factories) {
+		    System.out.println("ScriptEngineFactory Info");
+		    String engName = factory.getEngineName();
+		    String engVersion = factory.getEngineVersion();
+		    String langName = factory.getLanguageName();
+		    String langVersion = factory.getLanguageVersion();
+		    System.out.printf("\tScript Engine: %s (%s)\n", 
+		        engName, engVersion);
+		    List<String> engNames = factory.getNames();
+		    for(String name: engNames) {
+		      System.out.printf("\tEngine Alias: %s\n", name);
+		    }
+		    System.out.printf("\tLanguage: %s (%s)\n", 
+		        langName, langVersion);
+		  }    
+		
 		
 	}
 	
