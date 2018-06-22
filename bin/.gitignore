@@ -8,4 +8,5 @@ log/
 target/
 
 /target/
+/.gitignore
 /com/
