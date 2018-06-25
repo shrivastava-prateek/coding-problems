@@ -1,11 +1,13 @@
 package com.random;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 
 abstract class AbstractMain {
     static int a = 1;
@@ -43,6 +45,10 @@ public class Main{
 		      ex.printStackTrace();
 		  }    
 		  */
+		
+		Set<Integer> set = new HashSet<>();
+		int[] arr = {1,2,3,4,5};
+		//Collections.addAll(set, arr);
 		  
 		  ScriptEngineManager mgr = new ScriptEngineManager();
 		  List<ScriptEngineFactory> factories = 
