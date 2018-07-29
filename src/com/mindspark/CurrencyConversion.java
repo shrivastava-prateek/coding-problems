@@ -9,6 +9,7 @@ public class CurrencyConversion {
 		Scanner sc= new Scanner(System.in);
 		int coin = sc.nextInt();
 System.out.println(findMaxValue(coin));
+sc.close();
 	}
 	
 	public static int findMaxValue(int coin){

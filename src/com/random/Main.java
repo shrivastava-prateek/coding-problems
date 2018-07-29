@@ -1,10 +1,6 @@
 package com.random;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
@@ -35,7 +31,6 @@ public class Main{
 		System.out.println(map.get(new Student(1,"Neha")));
 		System.out.println(map.entrySet());*/
 		
-		String s = "";
 		
 		/*ScriptEngineManager mgr = new ScriptEngineManager();
 		  ScriptEngine jsEngine = mgr.getEngineByName("JavaScript");
@@ -46,8 +41,6 @@ public class Main{
 		  }    
 		  */
 		
-		Set<Integer> set = new HashSet<>();
-		int[] arr = {1,2,3,4,5};
 		//Collections.addAll(set, arr);
 		  
 		  ScriptEngineManager mgr = new ScriptEngineManager();
