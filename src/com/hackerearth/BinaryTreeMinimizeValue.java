@@ -17,7 +17,7 @@ public class BinaryTreeMinimizeValue {
 		String[] firstLine = br.readLine().split(" ");
 		
 		int nodes = Integer.parseInt(firstLine[0]);
-		int newNodevalue = Integer.parseInt(firstLine[1]);
+	//	int newNodevalue = Integer.parseInt(firstLine[1]);
 		String[] nodeValues = br.readLine().split(" ");
 		
 		
@@ -26,7 +26,7 @@ public class BinaryTreeMinimizeValue {
 			n.value = Integer.parseInt(value);
 		}
 		for(int i=0;i<nodes-1;i++) {
-			String[] edges = br.readLine().split(" ");
+		//	String[] edges = br.readLine().split(" ");
 			
 		}
 		
