@@ -9,5 +9,5 @@ target/
 
 /target/
 
-/.gitignore
-/com/
+/bin/
+bin/

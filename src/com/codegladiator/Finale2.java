@@ -53,7 +53,7 @@ public class Finale2 {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         
 		String[] firstLine = reader.readLine().split(" ");
-		int N = Integer.parseInt(firstLine[0]);
+		//int N = Integer.parseInt(firstLine[0]);
 		int M = Integer.parseInt(firstLine[1]);
 		List<Edge> edges = new ArrayList<>();
 		
@@ -98,7 +98,7 @@ public class Finale2 {
 	static List<Cycle> calculateMinCycles(List<Edge> edges,int M) {
         List<Cycle> cycles = new ArrayList<>();
         int minNoOfEdges = 250*249;
-        int maxMargin = 0;
+       // int maxMargin = 0;
 		for(int i =0; i<M;i++) {
 			Edge edgeI = edges.get(i);
 			//if(edgeI.tortoiseT >= edgeI.hareT) continue;

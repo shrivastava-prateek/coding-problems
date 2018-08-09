@@ -39,14 +39,15 @@ public class Test3 {
 		List<Integer> startList  = new ArrayList<Integer>();
 		int arrivalTimeCopy2[];
 		int exitTimeCopy2[];
-		int count = 0,k = 0;
+		int count = 0;
+		//k = 0;
 		for(int i = 0 ; i < N;i++){
 			
 			List<Integer> arrivalTimeCopy = new ArrayList<Integer>();
 			List<Integer> exitTimeCopy = new ArrayList<Integer>();
 			if(!startList.contains(arrivalTime[i])){
 				count = 1;
-				k = 0;
+			//	k = 0;
 				startList.add(arrivalTime[i]);
 				for(int j = 0 ; j <N ;j++ ){
 
